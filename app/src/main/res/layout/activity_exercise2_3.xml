@@ -9,28 +9,42 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/padding_small"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="My Calculator"
+            android:textSize="@dimen/text_size_large" />
 
         <EditText
             android:id="@+id/calc_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter here"
-            android:inputType="text" />
+            android:inputType="none"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:cursorVisible="true"
+            android:gravity="end"
+            android:textSize="@dimen/text_size_large"
+            android:textDirection="ltr"/>
 
         <GridView
             android:id="@+id/calc_grid_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:numColumns="4" />
-
+            android:numColumns="4"
+            android:gravity="center"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp"
+            android:horizontalSpacing="8dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

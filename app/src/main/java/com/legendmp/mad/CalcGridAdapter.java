@@ -8,8 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class CalcGridAdapter extends BaseAdapter {
-    String[] items;
-    Context context;
+    private Context context;
+    private String[] items;
+
+    public CalcGridAdapter(Context context, String[] items) {
+        this.context = context;
+        this.items = items;
+    }
 
     @Override
     public int getCount() {

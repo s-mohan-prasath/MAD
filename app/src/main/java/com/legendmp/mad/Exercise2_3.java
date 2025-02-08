@@ -3,22 +3,26 @@ package com.legendmp.mad;
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.graphics.Insets;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Exercise2_3 extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
+    private final char[] operators = {'%','^','x','-','+','/'};
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,86 +39,112 @@ public class Exercise2_3 extends AppCompatActivity {
         // Initializing GridView
         GridView gridView = findViewById(R.id.calc_grid_view);
         EditText calcInput = findViewById(R.id.calc_input);
+        TextView calcOutput = findViewById(R.id.calc_output_text);
 
         // Sample data
         String[] items = {"AC","( )","%","/","7","8","9","x","4","5","6","-","1", "2", "3","+","0",".","DEL","="};
 
         CalcGridAdapter adapter = new CalcGridAdapter(this,items);
         gridView.setAdapter(adapter);
-        calcInput.setOnTouchListener((v,event)->{
-            if(event.getAction()== MotionEvent.ACTION_DOWN){
-                v.requestFocus();
-                hideKeyboard(v);
-            }
-            return false;
-        });
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedValue = (String) parent.getItemAtPosition(position);
-                String oldText = calcInput.getText().toString();
-                int cursorPos = calcInput.getText().length();
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
 
-                if(selectedValue.equals("AC")){
+            // BUTTON CLICK - VALUE INSERT IN THE EDIT TEXT
+            String selectedValue = (String) parent.getItemAtPosition(position);
+            String oldText = calcInput.getText().toString();
+            int cursorPos = calcInput.getText().length();
+
+            switch (selectedValue) {
+                case "=":
+                    if(cursorPos!=0){
+                        ExpressionEvaluator evaluate = new ExpressionEvaluator();
+                        calcOutput.setText(evaluate.evalExp(oldText));
+                    }
+//                    calcInput.setText("");
+                    cursorPos = -1;
+                    break;
+                case "AC":
                     calcInput.setText("");
                     cursorPos = -1;
-                }else if(selectedValue.equals("DEL")){
-                    int len = oldText.length();
-                    if(!oldText.isEmpty()){
-                        calcInput.setText(oldText.substring(0,len-1));
-                        cursorPos-=2;
-                    }else{
-                        cursorPos=-1;
+                    break;
+                case "DEL":
+                    if (cursorPos!=0) {
+                        calcInput.setText(oldText.substring(0, cursorPos - 1));
+                        cursorPos -= 2;
+                    } else {
+                        cursorPos = -1;
                     }
-                }else if(selectedValue.equals("( )")){
-                    if (!oldText.contains("(")) {
+                    break;
+                case "( )":
+                    if (cursorPos==0 || oldText.charAt(cursorPos-1) == '(' || isOperator(oldText.charAt(cursorPos-1))) {
                         calcInput.setText(oldText + "(");
-                    } else if (!oldText.contains(")")) {
-                        calcInput.setText(oldText + ")");
-                    }else{
-                        calcInput.setText(oldText + "(");
+                    } else {
+                        if(haveMoreOpenParenthesis(oldText)){
+                            calcInput.setText(oldText + ")");
+                        }else{
+                            calcInput.setText(oldText+"(");
+                        }
                     }
-                }else{
-                    cursorPos = calcInput.getSelectionStart();
-                    calcInput.setText(calcInput.getText().toString()+selectedValue);
-                }
-                calcInput.setSelection(cursorPos+1);
-
-//      OPACITY AND SOUND PLAYING
-                view.setAlpha(0.7f);
-                view.setBackgroundColor(getResources().getColor(R.color.black));
-                playClickSound();
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(() ->
-                        {
-                            view.setAlpha(1f);
-                            view.setBackgroundColor(getResources().getColor(R.color.blue));
-                        });
+                    break;
+                default:
+                    char op = selectedValue.charAt(0);
+                    if(isOperator(op)){
+                        if(cursorPos==0){
+                            if(op=='-'){
+                                calcInput.setText(oldText+"-");
+                            }else{
+                                cursorPos--;
+                            }
+                        }
+                        else{
+                            if(cursorPos==1 && oldText.charAt(0)=='-'){
+                                cursorPos--;
+                            }
+                            else if(isOperator(oldText.charAt(cursorPos-1))){
+                                oldText = oldText.substring(0,cursorPos-1) + selectedValue;
+                                calcInput.setText(oldText);
+                                cursorPos--;
+                            }else{
+                                calcInput.setText(oldText+selectedValue);
+                            }
+                        }
                     }
-                }, 500);
+                    else{
+                        calcInput.setText(oldText+selectedValue);
+                    }
+                    break;
             }
+            calcInput.setSelection(cursorPos+1);
+
+            // OPACITY AND SOUND PLAYING
+            view.setAlpha(0.7f);
+            view.setBackgroundColor(getResources().getColor(R.color.black));
+            playClickSound();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(() ->
+                    {
+                        view.setAlpha(1f);
+                        view.setBackgroundColor(getResources().getColor(R.color.blue));
+                    });
+                }
+            }, 500);
         });
     }
-    private String calculate(String mathExp){
-        return mathExp;
-    }
-    private boolean validateParenthesis(String exp){
-        Stack<Character> stack = new Stack<>();
+    private boolean haveMoreOpenParenthesis(String exp) {
+        int left = 0,right = 0;
         int len = exp.length();
-        for(int i = 0;i<len;i++){
-            if(exp.charAt(i)=='(')stack.push('(');
-            else if(exp.charAt(i)==')'){
-                if(!stack.isEmpty())stack.pop();
-                else return false;
-            }
+        for(int i  = 0;i<len;i++){
+            if(exp.charAt(i)=='(')left++;
+            else if(exp.charAt(i)==')')right++;
         }
-        return true;
+        return left>right;
     }
-    // Hide keyboard function
-    private void hideKeyboard(View view) {
-        view.clearFocus(); // Remove focus to prevent soft keyboard from appearing
+    private boolean isOperator(char op) {
+        for (char c : operators) {
+            if (c == op) return true;
+        }
+        return false;
     }
     private void playClickSound(){
         if(mediaPlayer==null)mediaPlayer = MediaPlayer.create(this,R.raw.click_sound);

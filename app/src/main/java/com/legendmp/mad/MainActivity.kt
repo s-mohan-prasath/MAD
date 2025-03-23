@@ -27,12 +27,16 @@ class MainActivity : AppCompatActivity() {
         var ex2_1Btn = findViewById<Button>(R.id.btn_ex2_1);
         var ex2_2Btn = findViewById<Button>(R.id.btn_ex2_2);
         var ex2_3Btn = findViewById<Button>(R.id.btn_ex2_3);
+        var ex3Btn = findViewById<Button>(R.id.btn_ex3);
+        var goToUDP = findViewById<Button>(R.id.go_to_udp_btn);
 
         val ex1Intent = Intent(this,Exercise1::class.java)
         val ex2Intent = Intent(this,Exercise2::class.java)
         val ex2_1Intent = Intent(this,Exercise2_1::class.java)
         val ex2_2Intent = Intent(this,Exercise2_2::class.java)
         val ex2_3Intent = Intent(this,Exercise2_3::class.java)
+        val ex3Intent = Intent(this,Exercise3::class.java)
+        val udpIntent = Intent(this,UDPActivity::class.java)
         ex1Btn.setOnClickListener{
             startActivity(ex1Intent)
         }
@@ -47,6 +51,12 @@ class MainActivity : AppCompatActivity() {
         }
         ex2_3Btn.setOnClickListener{
             startActivity(ex2_3Intent)
+        }
+        ex3Btn.setOnClickListener{
+            startActivity(ex3Intent)
+        }
+        goToUDP.setOnClickListener{
+            startActivity(udpIntent)
         }
     }
 }

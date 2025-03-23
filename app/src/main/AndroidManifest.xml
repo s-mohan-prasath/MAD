@@ -13,6 +13,15 @@
         android:theme="@style/Theme.MAD"
         tools:targetApi="31">
         <activity
+            android:name=".Exercise3_summary"
+            android:exported="false" />
+        <activity
+            android:name=".Exercise3"
+            android:exported="false" />
+        <activity
+            android:name=".UDPActivity"
+            android:exported="false" />
+        <activity
             android:name=".Exercise2_3"
             android:exported="false" />
         <activity

@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         var ex2_2Btn = findViewById<Button>(R.id.btn_ex2_2);
         var ex2_3Btn = findViewById<Button>(R.id.btn_ex2_3);
         var ex3Btn = findViewById<Button>(R.id.btn_ex3);
-        var goToUDP = findViewById<Button>(R.id.go_to_udp_btn);
+        var fileTransferBtn = findViewById<Button>(R.id.go_to_filetransfer);
+        var openChatAppBtn = findViewById<Button>(R.id.openChatAppBtn);
 
         val ex1Intent = Intent(this,Exercise1::class.java)
         val ex2Intent = Intent(this,Exercise2::class.java)
@@ -36,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         val ex2_2Intent = Intent(this,Exercise2_2::class.java)
         val ex2_3Intent = Intent(this,Exercise2_3::class.java)
         val ex3Intent = Intent(this,Exercise3::class.java)
-        val udpIntent = Intent(this,UDPActivity::class.java)
+        val chatIntent = Intent(this,ChatApp::class.java)
+
         ex1Btn.setOnClickListener{
             startActivity(ex1Intent)
         }
@@ -55,8 +57,11 @@ class MainActivity : AppCompatActivity() {
         ex3Btn.setOnClickListener{
             startActivity(ex3Intent)
         }
-        goToUDP.setOnClickListener{
-            startActivity(udpIntent)
+        fileTransferBtn.setOnClickListener {
+            startActivity(Intent(this,FileTransferActivity::class.java))
+        }
+        openChatAppBtn.setOnClickListener {
+            startActivity(chatIntent)
         }
     }
 }

@@ -79,11 +79,19 @@
             android:text="Exercise - 3"
             android:textSize="@dimen/text_size_medium" />
         <Button
-            android:id="@+id/go_to_udp_btn"
+            android:id="@+id/go_to_filetransfer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
-            android:text="GO TO QUIZ PAGE"
+            android:text="GO FILE TRANSFER"
             android:textSize="@dimen/text_size_medium" />
+        <Button
+            android:id="@+id/openChatAppBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="Go to Chat App"
+            android:textSize="@dimen/text_size_medium" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

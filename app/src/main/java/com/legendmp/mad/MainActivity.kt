@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         var ex2_2Btn = findViewById<Button>(R.id.btn_ex2_2);
         var ex2_3Btn = findViewById<Button>(R.id.btn_ex2_3);
         var ex3Btn = findViewById<Button>(R.id.btn_ex3);
+        var ex4Btn = findViewById<Button>(R.id.btn_ex4);
         var fileTransferBtn = findViewById<Button>(R.id.go_to_filetransfer);
         var openChatAppBtn = findViewById<Button>(R.id.openChatAppBtn);
 
@@ -56,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         }
         ex3Btn.setOnClickListener{
             startActivity(ex3Intent)
+        }
+        ex4Btn.setOnClickListener {
+            startActivity(Intent(this,SignupActivity::class.java))
         }
         fileTransferBtn.setOnClickListener {
             startActivity(Intent(this,FileTransferActivity::class.java))

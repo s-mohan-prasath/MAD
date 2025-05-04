@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "527608336091",
+    "project_id": "mad-app-sem2",
+    "storage_bucket": "mad-app-sem2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527608336091:android:37a0e2330bc83e9ec886fe",
+        "android_client_info": {
+          "package_name": "com.legendmp.mad"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANPBU4MsaNgi8K02PcVtSdEXrU_vwLVgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
